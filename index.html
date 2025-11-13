@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartDashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white p-4 shadow-lg transition-all duration-300">
+      <h2 class="text-xl font-bold mb-6">SmartDashboard</h2>
+      <nav class="flex flex-col space-y-2">
+        <button class="tab-link text-left" data-tab="dashboard">📊 Dashboard</button>
+        <button class="tab-link text-left" data-tab="users">👤 Users</button>
+        <button class="tab-link text-left" data-tab="reports">📁 Reports</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Top Bar -->
+      <div class="flex justify-between items-center mb-6">
+        <button id="toggleSidebar" class="md:hidden bg-white p-2 rounded shadow">
+          ☰
+        </button>
+        <h1 class="text-2xl font-bold">SmartDashboard</h1>
+        <div class="bg-white px-4 py-2 rounded shadow">
+          <span>chidozie victor</span>
+        </div>
+      </div>
+
+      <!-- Dashboard Tab -->
+      <section id="dashboard" class="tab-content">
+        <!-- Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">Total Users</h3>
+            <p class="text-2xl font-bold">1,245</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">Revenue</h3>
+            <p class="text-2xl font-bold">$12,370</p>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">New Signups</h3>
+            <p class="text-2xl font-bold">89</p>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="bg-white p-6 rounded shadow">
+          <h3 class="text-lg font-semibold mb-4">Monthly Active Users</h3>
+          <canvas id="userChart" height="100"></canvas>
+        </div>
+      </section>
+
+      <!-- Users Tab -->
+      <section id="users" class="tab-content hidden">
+        <div class="bg-white p-6 rounded shadow">
+          <h3 class="text-lg font-semibold mb-4">Recent Users</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-left border">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 border">Name</th>
+                  <th class="px-4 py-2 border">Email</th>
+                  <th class="px-4 py-2 border">Role</th>
+                  <th class="px-4 py-2 border">Joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="px-4 py-2 border">cynthia ugoeze</td>
+                  <td class="px-4 py-2 border">cynthia@gmail.com</td>
+                  <td class="px-4 py-2 border">Admin</td>
+                  <td class="px-4 py-2 border">June 5, 2025</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 border">Mike Smith</td>
+                  <td class="px-4 py-2 border">mike@gmail.com</td>
+                  <td class="px-4 py-2 border">User</td>
+                  <td class="px-4 py-2 border">June 6, 2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports Tab -->
+      
+      <!-- Reports Tab -->
+       <h3 class="text-lg font-semibold mb-4">Reports Overview</h3>
+
+<!-- Filters -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+  <!-- Search -->
+  <input
+    type="text"
+    id="reportSearch"
+    placeholder="Search reports..."
+    class="w-full md:w-1/2 p-2 border rounded"
+  />
+
+  <!-- Status Filter -->
+  <select id="statusFilter" class="p-2 border rounded">
+    <option value="">All Statuses</option>
+    <option value="Completed">Completed</option>
+    <option value="In Progress">In Progress</option>
+  </select>
+</div>
+
+<!-- Add Report Button -->
+<div class="flex justify-end mb-4">
+  <button id="openReportModal" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+    + Add Report
+  </button>
+</div>
+
+<!-- Add Report Modal -->
+<div id="reportModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4">Add New Report</h2>
+    <form id="reportForm">
+      <label class="block mb-2">Report Name:</label>
+      <input type="text" id="reportName" required class="w-full p-2 border rounded mb-4" />
+
+      <label class="block mb-2">Status:</label>
+      <select id="reportStatus" required class="w-full p-2 border rounded mb-4">
+        <option value="Completed">Completed</option>
+        <option value="In Progress">In Progress</option>
+      </select>
+
+      <div class="flex justify-end space-x-2">
+        <button type="button" id="closeReportModal" class="px-4 py-2 bg-gray-200 rounded">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<section id="reports" class="tab-content hidden">
+  <div class="bg-white p-6 rounded shadow">
+    <h3 class="text-lg font-semibold mb-4">Reports Overview</h3>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left border">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 border">Report Name</th>
+            <th class="px-4 py-2 border">Date</th>
+            <th class="px-4 py-2 border">Status</th>
+            <th class="px-4 py-2 border">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="px-4 py-2 border">Q1 Financial Report</td>
+            <td class="px-4 py-2 border">June 1, 2025</td>
+            <td class="px-4 py-2 border text-green-600 font-semibold">Completed</td>
+            <td class="px-4 py-2 border">
+              <a href="#" class="text-blue-600 underline hover:text-blue-800">Download</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 border">User Activity Summary</td>
+            <td class="px-4 py-2 border">June 5, 2025</td>
+            <td class="px-4 py-2 border text-yellow-500 font-semibold">In Progress</td>
+            <td class="px-4 py-2 border text-gray-400">Pending</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-2 border">System Audit Log</td>
+            <td class="px-4 py-2 border">May 28, 2025</td>
+            <td class="px-4 py-2 border text-green-600 font-semibold">Completed</td>
+            <td class="px-4 py-2 border">
+              <a href="#" class="text-blue-600 underline hover:text-blue-800">Download</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
